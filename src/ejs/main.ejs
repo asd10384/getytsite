@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>기본 페이지</title>
+</head>
+<body>
+  <div class="ytsr">
+    <h2>ytsr</h2>
+    <h3>TEXT로 노래검색</h3>
+    <h4>사용법: <%- domain %>/ytsr?text=검색할내용&html=true</h4>
+    <h4><a href="/ytsr?text=에잇&html=true">[ 사용예시 ]</a></h4>
+  </div>
+  <div class="recommand">
+    <h2>recommand</h2>
+    <h3>받은 노래 아이디로 노래추천</h3>
+    <h4>사용법: <%- domain %>/ytsr?list=["제외할노래아이디"]&vid=전송할노래아이디&html=true</h4>
+    <h4><a href="/recommand?list=[]&vid=5_IYVichXbA&html=true">[ 사용예시 ]</a></h4>
+  </div>
+  <style>
+    body {
+      margin-top: 20px;
+      text-align: center;
+    }
+    a {
+      font-weight: bold;
+      color: rgb(0, 0, 255);
+      text-decoration: none;
+    }
+    a:hover {
+      color: rgba(0, 0, 255, 0.5);
+    }
+    .embed {
+      position: relative;
+      height: 0;
+      overflow: hidden;
+      padding-top: 30px;
+      padding-bottom: 56.25%;
+    }
+    .embed iframe,
+    .embed object,
+    .embed embed {
+      position: absolute;
+      top: 0;
+      left: 25%;
+      width: 50%;
+      height: 50%;
+    }
+  </style>
+</body>
+</html>

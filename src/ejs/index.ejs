@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%- title %></title>
+</head>
+<body>
+  <div class="back">
+    <a href="/">[ 메인으로 ]</a>
+  </div>
+  <div class="send">
+    <% if (list) { %>
+      <h2>이미 재생된 노래 리스트</h2>
+      <h3><%- list %></h3>
+      <h2>전송한 노래 아이디</h2>
+      <h3><%- sendvid %></h3>
+    <% } else { %>
+      <h2>전송한 텍스트</h2>
+      <h3><%- text %></h3>
+    <% } %>
+  </div>
+  <div class="video">
+    <h2>결과</h2>
+    <h3><%- vid %></h3>
+    <div class="embed">
+      <iframe width="device-width" height="auto" src="https://www.youtube.com/embed/<%- vid %>?controls=1" frameborder="0" allow="encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        노래 아이디: <%- vid %>
+      </iframe>
+    </div>
+  </div>
+  <style>
+    body {
+      margin-top: 20px;
+      text-align: center;
+    }
+    a {
+      font-weight: bold;
+      color: rgb(0, 0, 255);
+      text-decoration: none;
+    }
+    a:hover {
+      color: rgba(0, 0, 255, 0.5);
+    }
+    .embed {
+      position: relative;
+      height: 0;
+      overflow: hidden;
+      padding-top: 30px;
+      padding-bottom: 56.25%;
+    }
+    .embed iframe,
+    .embed object,
+    .embed embed {
+      position: absolute;
+      top: 0;
+      left: 25%;
+      width: 50%;
+      height: 50%;
+    }
+  </style>
+</body>
+</html>
