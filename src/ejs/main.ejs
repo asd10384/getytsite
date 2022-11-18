@@ -10,19 +10,44 @@
   <div class="ytsr">
     <h2>ytsr</h2>
     <h3>TEXT로 노래검색</h3>
-    <h4>사용법: <%- domain %>/ytsr?text=검색할내용&html=true</h4>
-    <h4><a href="/ytsr?text=에잇&html=true">[ 사용예시 ]</a></h4>
+    <h4>사용법: 밑에 검색하고 싶은 제목 검색</h4>
+    <input id="text" type="text" placeholder="예시: 에잇" />
+    <button type="button" onclick="onClick('ytsr')">검색</button>
   </div>
   <div class="recommand">
     <h2>recommand</h2>
     <h3>받은 노래 아이디로 노래추천</h3>
-    <h4>사용법: <%- domain %>/ytsr?list=["제외할노래아이디"]&vid=전송할노래아이디&html=true</h4>
-    <h4><a href="/recommand?list=[]&vid=5_IYVichXbA&html=true">[ 사용예시 ]</a></h4>
+    <h4>사용법: 제외할 리스트(유튜브 아이디)입력<br />노래 아이디 (유튜브 아이디) 검색</h4>
+    <input id="list" type="text" placeholder="예시: ['5_IYVichXbA']" />
+    <br />
+    <br />
+    <input id="text2" type="text" placeholder="예시: 5_IYVichXbA" />
+    <button type="button" onclick="onClick('recommand')">검색</button>
   </div>
+  <script>
+    const onClick = (data) => {
+      let url = `<%- domain %>/`;
+      let text = document.getElementById("text").value;
+      let text2 = document.getElementById("text2").value;
+      let list = document.getElementById("list").value;
+      if (data == "ytsr") url += `ytsr?text=${text}&html=true`;
+      if (data == "recommand") url += `recommand?list=${list ? list : "[]"}&vid=${text2}&html=true`;
+      window.location.href = url;
+    }
+  </script>
   <style>
     body {
       margin-top: 20px;
       text-align: center;
+    }
+    input {
+      text-align: center;
+      font-size: 20px;
+      padding: 10px 0;
+    }
+    button {
+      font-size: 20px;
+      padding: 7px 10px;
     }
     a {
       font-weight: bold;
