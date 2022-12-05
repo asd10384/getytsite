@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { readdirSync } from "fs";
 import path, { join } from "path";
+import favicon from "serve-favicon";
 
 const app = express();
 
@@ -12,6 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname + "/ejs"));
+app.use(favicon(path.join(__dirname, "image/favicon.ico")));
+app.use('/favicon.ico', express.static('/image/favicon.ico'));
 app.use('/file', express.static(__dirname + "/"));
 
 const route = readdirSync(join(__dirname, 'routes')).filter(file => file.endsWith('.js') || file.endsWith('.ts'));

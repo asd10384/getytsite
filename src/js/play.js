@@ -1,4 +1,5 @@
 var player;
+var title = vid;
 var list = [];
 
 function loadVideo() {
@@ -37,35 +38,26 @@ function loadVideo() {
   
   function onPlyaerReady(event) {
     // event.target.playVideo();
-    $("title").html(`play - ${vid}`);
+    title = $("#player")?.attr("title")?.trim() || vid;
     $("#list").html(`[ "${list.join(`" , "`)}" ]`);
     $("#nowplay").html(vid);
+    $("title").html(title);
   }
-  // let first = false;
   function onPlyaerStateChange(event) {
     // -1 시작전 / 0 종료 / 1 재생중 / 2 일시정지 / 3 버퍼링 / 4 동영상 신호
     if (event.data == 1) {
-      console.log(`${vid} - playing`);
-      $("title").html(`play - ${vid}`);
-      $("#list").html(`[ "${list.join(`" , "`)}" ]`);
-      $("#nowplay").html(vid);
-      // if (!first) {
-      //   first = true;
-      //   event.target.unMute();
-      //   event.target.setVolume(50);
-      //   event.target.playVideo();
-      // }
+      console.log(`${vid} {\n  id: ${vid}\n  name: ${title}\n  link: https://youtu.be/${vid}\n}`);
     }
     if (event.data == 0) {
       $.get(`/recommand?list=${list.join(",")}&vid=${vid}`, (data) => {
         if (data?.vid) {
           vid = data.vid;
-          console.log(list);
           list.push(vid);
-          console.log(list);
-          player.loadVideoById({
-            videoId: vid
-          });
+          player.loadVideoById(vid);
+          title = $("#player")?.attr("title")?.trim() || vid;
+          $("#list").html(`[ "${list.join(`" , "`)}" ]`);
+          $("#nowplay").html(vid);
+          $("title").html(title);
         }
       });
     }
