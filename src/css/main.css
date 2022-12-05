@@ -1,0 +1,38 @@
+
+body {
+  margin-top: 20px;
+  text-align: center;
+}
+input {
+  text-align: center;
+  font-size: 20px;
+  padding: 10px 0;
+}
+button {
+  font-size: 20px;
+  padding: 7px 10px;
+}
+a {
+  font-weight: bold;
+  color: rgb(0, 0, 255);
+  text-decoration: none;
+}
+a:hover {
+  color: rgba(0, 0, 255, 0.5);
+}
+.embed {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  padding-top: 30px;
+  padding-bottom: 56.25%;
+}
+.embed iframe,
+.embed object,
+.embed embed {
+  position: absolute;
+  top: 0;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+}

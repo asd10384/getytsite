@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%- title %></title>
+  <link rel="stylesheet" href="file/css/index.css">
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script>
+    var vid = "<%- vid %>";
+  </script>
+</head>
+<body>
+  <div class="send">
+    <h2>이미 재생된 노래 리스트</h2>
+    <h3 id="list">[]</h3>
+  </div>
+  <div class="video">
+    <h2>현재재생중</h2>
+    <h3 id="nowplay"><%- vid %></h3>
+    <div class="embed">
+      <div id="player"></div>
+    </div>
+    <h4>처음 재생할때만 직접해야하고 다음곡부터는 자동으로 재생됨</h4>
+  </div>
+  <script src="file/js/play.js"></script>
+</body>
+</html>

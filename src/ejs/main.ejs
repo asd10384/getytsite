@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>기본 페이지</title>
+  <link rel="stylesheet" href="file/css/main.css">
 </head>
 <body>
   <div class="ytsr">
@@ -24,55 +25,27 @@
     <input id="text2" type="text" placeholder="예시: 5_IYVichXbA" />
     <button type="button" onclick="onClick('recommand')">검색</button>
   </div>
+  <div class="play">
+    <h2>play</h2>
+    <h3>받은 노래주소(유튜브영상,유튜브뮤직)로 자동재생</h3>
+    <h4>사용법: 노래주소(유튜브영상,유튜브뮤직) 입력</h4>
+    <h5>예시: ['https://music.youtube.com/watch?v=ShP6KqZVQtM']</h5>
+    <input id="text3" type="text" placeholder="예시: ['ShP6KqZVQtM']" />
+    <br />
+    <button type="button" onclick="onClick('play')">재생</button>
+  </div>
   <script>
     const onClick = (data) => {
       let url = `<%- domain %>/`;
       let text = document.getElementById("text").value;
       let text2 = document.getElementById("text2").value;
+      let text3 = document.getElementById("text3").value;
       let list = document.getElementById("list").value;
       if (data == "ytsr") url += `ytsr?text=${text}&html=true`;
       if (data == "recommand") url += `recommand?list=${list ? list : "[]"}&vid=${text2}&html=true`;
+      if (data == "play") url += `play?url=${text3}`;
       window.location.href = url;
     }
   </script>
-  <style>
-    body {
-      margin-top: 20px;
-      text-align: center;
-    }
-    input {
-      text-align: center;
-      font-size: 20px;
-      padding: 10px 0;
-    }
-    button {
-      font-size: 20px;
-      padding: 7px 10px;
-    }
-    a {
-      font-weight: bold;
-      color: rgb(0, 0, 255);
-      text-decoration: none;
-    }
-    a:hover {
-      color: rgba(0, 0, 255, 0.5);
-    }
-    .embed {
-      position: relative;
-      height: 0;
-      overflow: hidden;
-      padding-top: 30px;
-      padding-bottom: 56.25%;
-    }
-    .embed iframe,
-    .embed object,
-    .embed embed {
-      position: absolute;
-      top: 0;
-      left: 25%;
-      width: 50%;
-      height: 50%;
-    }
-  </style>
 </body>
 </html>
