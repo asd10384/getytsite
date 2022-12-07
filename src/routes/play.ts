@@ -5,13 +5,17 @@ const checkvideo = /^(?:https?:\/\/)?(?:m\.|www\.|music\.)?(?:youtu\.be\/|youtub
 const def = "https://music.youtube.com/watch?v=";
 
 export default Router().get("/play", async (req, res) => {
+  const domain = `${req.protocol}://${req.headers.host}`;
   const url: string | undefined = req.query.url ? (req.query.url as string).trim() : undefined;
+  const max: number | undefined = req.query.max && !isNaN(req.query.max as any) ? Number(req.query.max) : undefined;
   if (!url) return res.status(300).json({ err: "not found url" });
   var check = url.match(checkvideo);
   if (!check || !check[1]) check = `${def}${url}`.match(checkvideo);
   if (!check || !check[1]) return res.status(300).json({ err: "not the url of youtube or youtube music" });
   return res.status(200).render("play", {
     title: `play - ${check[1]}`,
-    vid: check[1]
+    vid: check[1],
+    getmax: max,
+    getorigin: domain
   });
 });

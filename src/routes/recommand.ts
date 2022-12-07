@@ -6,9 +6,10 @@ export default Router().get("/recommand", async (req, res) => {
     const checkhtml: string | undefined = req.query.html && typeof(req.query.html) == "string" ? req.query.html.trim() : undefined;
     const list: string[] | undefined = req.query.list ? req.query.list as string[] : undefined;
     const vid: string | undefined = req.query.vid ? (req.query.vid as string).trim() : undefined;
+    const max: number | undefined = req.query.max && !isNaN(req.query.max as any) ? Number(req.query.max) : undefined;
     if (!list) return res.status(300).json({ vid: null, err: "리스트 없음" });
     if (!vid || vid.length == 0) return res.status(300).json({ vid: null, err: "not found vid" });
-    let getvid = await recommand(list, vid);
+    let getvid = await recommand(list, vid, max);
     if (getvid[0]) {
       if (checkhtml == "true") return res.status(200).render("index", {
         title: "받은 노래 아이디로 노래추천",

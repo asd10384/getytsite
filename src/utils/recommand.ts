@@ -10,7 +10,7 @@ const cookie = process.env.YOUTUBE_MUSIC_COOKIE;
 const max = process.env.YOUTUBE_MUSIC_MAX && isNum(process.env.YOUTUBE_MUSIC_MAX) ? Number(process.env.YOUTUBE_MUSIC_MAX) : 2;
 const min = 1;
 
-export const recommand = async (recomlist: string[], vid: string): Promise<[ string, undefined ] | [ undefined, string ]> => {
+export const recommand = async (recomlist: string[], vid: string, getmax: number | undefined): Promise<[ string, undefined ] | [ undefined, string ]> => {
   if (!key) return [ undefined, "key를 찾을수 없음" ];
   if (!visitorData) return [ undefined, "visitorData를 찾을수 없음" ];
   if (!authorization) return [ undefined, "authorization을 찾을수 없음" ];
@@ -18,7 +18,7 @@ export const recommand = async (recomlist: string[], vid: string): Promise<[ str
   const getplid = await first(vid);
   if (!getplid[0]) return [ undefined, getplid[2] ];
   // console.log(getplid);
-  const getvid = await second(vid, getplid[0], getplid[1], recomlist);
+  const getvid = await second(vid, getplid[0], getplid[1], recomlist, getmax);
   if (!getvid[0]) return [ undefined, getvid[1] ];
   // console.log(getvid);
   return [ getvid[0], undefined ];
@@ -77,7 +77,7 @@ async function first(vid: string) {
   });
 }
 
-async function second(vid: string, plid: string, params: string, recomlist: string[]) {
+async function second(vid: string, plid: string, params: string, recomlist: string[], getmax: number | undefined) {
   return new Promise<[string | undefined, string]>((res, rej) => {
     if (!key) return res([ undefined, "키를 찾을수 없음" ]);
     axios.post(`https://music.youtube.com/youtubei/v1/next?key=${key}&prettyPrint=false`, {
@@ -113,9 +113,10 @@ async function second(vid: string, plid: string, params: string, recomlist: stri
         let d1 = res2.data?.contents?.singleColumnMusicWatchNextResultsRenderer?.tabbedRenderer?.watchNextTabbedResultsRenderer?.tabs[0]?.tabRenderer?.content?.musicQueueRenderer?.content?.playlistPanelRenderer?.contents;
         let getvid: string | undefined = undefined;
         let alr: number[] = [];
+        const setmax = getmax ? getmax : max;
         for (let i=1; i<d1.length; i++) {
           let r = i;
-          if (r<=max) r = Math.floor((Math.random()*(max-min))+min);
+          if (r<=setmax) r = Math.floor((Math.random()*(setmax-min))+min);
           if (alr.includes(r)) {
             continue;
           } else {
