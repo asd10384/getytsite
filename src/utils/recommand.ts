@@ -1,12 +1,13 @@
 import "dotenv/config";
 import axios from "axios";
+import { writeFileSync } from "fs";
 
 const isNum = (n: any) => !isNaN(n);
 
-const key = process.env.YOUTUBE_MUSIC_KEY;
-const visitorData = process.env.YOUTUBE_MUSIC_VISITORDATA;
-const authorization = process.env.YOUTUBE_MUSIC_AUTHORIZATION;
-const cookie = process.env.YOUTUBE_MUSIC_COOKIE;
+const key = process.env.B_YOUTUBE_MUSIC_KEY;
+const visitorData = process.env.B_YOUTUBE_MUSIC_VISITORDATA;
+const authorization = process.env.B_YOUTUBE_MUSIC_AUTHORIZATION;
+const cookie = process.env.B_YOUTUBE_MUSIC_COOKIE;
 const max = process.env.YOUTUBE_MUSIC_MAX && isNum(process.env.YOUTUBE_MUSIC_MAX) ? Number(process.env.YOUTUBE_MUSIC_MAX) : 2;
 const min = 1;
 
@@ -17,7 +18,6 @@ export const recommand = async (recomlist: string[], vid: string, getmax: number
 
   const getplid = await first(vid);
   if (!getplid[0]) return [ undefined, getplid[2] ];
-  // console.log(getplid);
   const getvid = await second(vid, getplid[0], getplid[1], recomlist, getmax);
   if (!getvid[0]) return [ undefined, getvid[1] ];
   // console.log(getvid);
@@ -37,9 +37,6 @@ async function first(vid: string) {
         "client": {
           "hl": "ko",
           "gl": "KR",
-          "remoteHost": "",         
-          "deviceMake": "",
-          "deviceModel": "",
           "visitorData": `${visitorData}`,
           "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36,gzip(gfe)", "clientName": "WEB_REMIX", "clientVersion": "1.20221019.01.00", "osName": "Windows", "osVersion": "10.0", "originalUrl": `https://music.youtube.com/watch?v=${vid}`, "platform": "DESKTOP", "clientFormFactor": "UNKNOWN_FORM_FACTOR", "configInfo": { "appInstallData": "CO2B5ZoGELiLrgUQntCuBRDpjf4SEP24_RIQ4rmuBRDbyq4FEKjUrgUQmcauBRDp1a4FELKI_hIQ1IOuBRDqyq4FENi-rQU%3D" }, "timeZone": "Asia/Seoul", "browserName": "Chrome", "browserVersion": "106.0.0.0", "acceptHeader": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9", "deviceExperimentId": "CgsxYVFIRmhlc3YxURDtgeWaBg%3D%3D", "screenWidthPoints": 979, "screenHeightPoints": 937, "screenPixelDensity": 1, "screenDensityFloat": 1, "utcOffsetMinutes": 540, "userInterfaceTheme": "USER_INTERFACE_THEME_LIGHT", "musicAppInfo": { "pwaInstallabilityStatus": "PWA_INSTALLABILITY_STATUS_UNKNOWN", "webDisplayMode": "WEB_DISPLAY_MODE_BROWSER", "storeDigitalGoodsApiSupportStatus": { "playStoreDigitalGoodsApiSupportStatus": "DIGITAL_GOODS_API_SUPPORT_STATUS_UNSUPPORTED" } } }, "user": { "lockedSafetyMode": false }, "request": { "useSsl": true, "internalExperimentFlags": [], "consistencyTokenJars": [] }, "clickTracking": { "clickTrackingParams": "CBQQ_20iEwj3ism4iv76AhX2sVYBHV1hAAU=" }, "adSignalsInfo": { "params": [{ "key": "dt", "value": "1666793711229" }, { "key": "flash", "value": "0" }, { "key": "frm", "value": "0" }, { "key": "u_tz", "value": "540" }, { "key": "u_his", "value": "7" }, { "key": "u_h", "value": "1080" }, { "key": "u_w", "value": "1920" }, { "key": "u_ah", "value": "1040" }, { "key": "u_aw", "value": "1920" }, { "key": "u_cd", "value": "24" }, { "key": "bc", "value": "31" }, { "key": "bih", "value": "937" }, { "key": "biw", "value": "979" }, { "key": "brdim", "value": "0,0,0,0,1920,0,1920,1040,979,937" }, { "key": "vis", "value": "1" }, { "key": "wgl", "value": "true" }, { "key": "ca_type", "value": "image" }], "bid": "ANyPxKqW4-6eVI5hNN7XIC2Vt8irIph6tHvmnmm95OX00lU2BsYw-Zba8v3YTqipyQt6ARwvzslBRwDlF44QkDadmHNCBATwtg"
         }
@@ -51,7 +48,8 @@ async function first(vid: string) {
         "origin": "https://music.youtube.com",
         "x-origin": "https://music.youtube.com",
         "referer": `https://music.youtube.com/watch?v=${vid}`,
-        "cookie": `${cookie}`
+        "cookie": `${cookie}`,
+        'Accept-Encoding': '*'
       },
       responseType: "json"
     }).then(async (res2) => {
@@ -71,7 +69,6 @@ async function first(vid: string) {
         return res([ undefined, "", "추천영상을 찾을수없음15" ]);
       }
     }).catch((err) => {
-      // console.log(err);
       return res([ undefined, "", "키를 찾을수없음1" ]);
     });
   });
@@ -91,9 +88,6 @@ async function second(vid: string, plid: string, params: string, recomlist: stri
         "client": {
           "hl": "ko",
           "gl": "KR",
-          "remoteHost": "",
-          "deviceMake": "",
-          "deviceModel": "",
           "visitorData": `${visitorData}`,
           "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36,gzip(gfe)", "clientName": "WEB_REMIX", "clientVersion": "1.20221019.01.00", "osName": "Windows", "osVersion": "10.0", "originalUrl": `https://music.youtube.com/watch?v=${vid}`, "platform": "DESKTOP", "clientFormFactor": "UNKNOWN_FORM_FACTOR", "configInfo": { "appInstallData": "CO2B5ZoGELiLrgUQntCuBRDpjf4SEP24_RIQ4rmuBRDbyq4FEKjUrgUQmcauBRDp1a4FELKI_hIQ1IOuBRDqyq4FENi-rQU%3D" }, "timeZone": "Asia/Seoul", "browserName": "Chrome", "browserVersion": "106.0.0.0", "acceptHeader": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9", "deviceExperimentId": "CgsxYVFIRmhlc3YxURDtgeWaBg%3D%3D", "screenWidthPoints": 979, "screenHeightPoints": 937, "screenPixelDensity": 1, "screenDensityFloat": 1, "utcOffsetMinutes": 540, "userInterfaceTheme": "USER_INTERFACE_THEME_LIGHT", "musicAppInfo": { "pwaInstallabilityStatus": "PWA_INSTALLABILITY_STATUS_UNKNOWN", "webDisplayMode": "WEB_DISPLAY_MODE_BROWSER", "storeDigitalGoodsApiSupportStatus": { "playStoreDigitalGoodsApiSupportStatus": "DIGITAL_GOODS_API_SUPPORT_STATUS_UNSUPPORTED" } } }, "user": { "lockedSafetyMode": false }, "request": { "useSsl": true, "internalExperimentFlags": [], "consistencyTokenJars": [] }, "clickTracking": { "clickTrackingParams": "CBQQ_20iEwj3ism4iv76AhX2sVYBHV1hAAU=" }, "adSignalsInfo": { "params": [{ "key": "dt", "value": "1666793711229" }, { "key": "flash", "value": "0" }, { "key": "frm", "value": "0" }, { "key": "u_tz", "value": "540" }, { "key": "u_his", "value": "7" }, { "key": "u_h", "value": "1080" }, { "key": "u_w", "value": "1920" }, { "key": "u_ah", "value": "1040" }, { "key": "u_aw", "value": "1920" }, { "key": "u_cd", "value": "24" }, { "key": "bc", "value": "31" }, { "key": "bih", "value": "937" }, { "key": "biw", "value": "979" }, { "key": "brdim", "value": "0,0,0,0,1920,0,1920,1040,979,937" }, { "key": "vis", "value": "1" }, { "key": "wgl", "value": "true" }, { "key": "ca_type", "value": "image" }], "bid": "ANyPxKqW4-6eVI5hNN7XIC2Vt8irIph6tHvmnmm95OX00lU2BsYw-Zba8v3YTqipyQt6ARwvzslBRwDlF44QkDadmHNCBATwtg"
         }
@@ -105,10 +99,12 @@ async function second(vid: string, plid: string, params: string, recomlist: stri
         "origin": "https://music.youtube.com",
         "x-origin": "https://music.youtube.com",
         "referer": `https://music.youtube.com/watch?v=${vid}`,
-        "cookie": `${cookie}`
+        "cookie": `${cookie}`,
+        'Accept-Encoding': '*'
       },
       responseType: "json"
     }).then(async (res2) => {
+      writeFileSync("test123.ts", "let t = "+JSON.stringify(res2.data, undefined, 2),"utf8");
       try {
         let d1 = res2.data?.contents?.singleColumnMusicWatchNextResultsRenderer?.tabbedRenderer?.watchNextTabbedResultsRenderer?.tabs[0]?.tabRenderer?.content?.musicQueueRenderer?.content?.playlistPanelRenderer?.contents;
         let getvid: string | undefined = undefined;
@@ -132,7 +128,8 @@ async function second(vid: string, plid: string, params: string, recomlist: stri
         }
         if (getvid) return res([ getvid, getvid ? "" : "추천영상을 찾을수없음25" ]);
         return res([ undefined, "추천영상을 찾을수없음2" ]);
-      } catch {
+      } catch (err) {
+        console.log(err);
         return res([ undefined, "추천영상을 찾을수없음21" ]);
       }
     }).catch((err) => {

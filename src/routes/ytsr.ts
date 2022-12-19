@@ -12,6 +12,7 @@ export default Router().get("/ytsr", async (req, res) => {
     const text: string | undefined = req.query.text ? (req.query.text as string).trim() : undefined;
     if (!text || text.length == 0) return res.status(300).json({ vid: null, err: "not found text" });
     let getvid = await getytmusic(text);
+    console.log(getvid);
     if (getvid[0]) {
       if (checkhtml == "true") return res.status(200).render("index", {
         title: "TEXT로 노래검색",
@@ -31,6 +32,7 @@ export default Router().get("/ytsr", async (req, res) => {
       if (list.items.length > 0 && list.items[0].type === "video" && list.items[0].id) {
         if (checkhtml == "true") return res.status(200).render("index", {
           title: "TEXT로 노래검색",
+          list: undefined,
           text: text,
           vid: getvid[0]
         });
