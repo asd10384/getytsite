@@ -1,6 +1,5 @@
 import "dotenv/config";
 import axios from "axios";
-import { writeFileSync } from "fs";
 
 const isNum = (n: any) => !isNaN(n);
 
@@ -17,6 +16,7 @@ export const recommand = async (recomlist: string[], vid: string, getmax: number
   if (!authorization) return [ undefined, "authorization을 찾을수 없음" ];
 
   const getplid = await first(vid);
+  // console.log(getplid);
   if (!getplid[0]) return [ undefined, getplid[2] ];
   const getvid = await second(vid, getplid[0], getplid[1], recomlist, getmax);
   if (!getvid[0]) return [ undefined, getvid[1] ];
@@ -29,9 +29,9 @@ async function first(vid: string) {
     axios.post(`https://music.youtube.com/youtubei/v1/next?key=${key}&prettyPrint=false`, {
       "enablePersistentPlaylistPanel": true,
       "tunerSettingValue": "AUTOMIX_SETTING_NORMAL",
-      // "playlistId": "",
+      "playlistId": "",
       "videoId": vid,
-      // "params": "wAEB8gECeAE%3D",
+      "params": "",
       "isAudioOnly": true,
       "context": {
         "client": {
@@ -47,7 +47,7 @@ async function first(vid: string) {
         "authorization": `${authorization}`,
         "origin": "https://music.youtube.com",
         "x-origin": "https://music.youtube.com",
-        "referer": `https://music.youtube.com/watch?v=${vid}`,
+        "referer": `https://music.youtube.com/`,
         "cookie": `${cookie}`,
         'Accept-Encoding': '*'
       },
@@ -69,6 +69,7 @@ async function first(vid: string) {
         return res([ undefined, "", "추천영상을 찾을수없음15" ]);
       }
     }).catch((err) => {
+      // console.log(err);
       return res([ undefined, "", "키를 찾을수없음1" ]);
     });
   });
@@ -98,13 +99,12 @@ async function second(vid: string, plid: string, params: string, recomlist: stri
         "authorization": `${authorization}`,
         "origin": "https://music.youtube.com",
         "x-origin": "https://music.youtube.com",
-        "referer": `https://music.youtube.com/watch?v=${vid}`,
+        "referer": `https://music.youtube.com/`,
         "cookie": `${cookie}`,
         'Accept-Encoding': '*'
       },
       responseType: "json"
     }).then(async (res2) => {
-      writeFileSync("test123.ts", "let t = "+JSON.stringify(res2.data, undefined, 2),"utf8");
       try {
         let d1 = res2.data?.contents?.singleColumnMusicWatchNextResultsRenderer?.tabbedRenderer?.watchNextTabbedResultsRenderer?.tabs[0]?.tabRenderer?.content?.musicQueueRenderer?.content?.playlistPanelRenderer?.contents;
         let getvid: string | undefined = undefined;
@@ -129,7 +129,7 @@ async function second(vid: string, plid: string, params: string, recomlist: stri
         if (getvid) return res([ getvid, getvid ? "" : "추천영상을 찾을수없음25" ]);
         return res([ undefined, "추천영상을 찾을수없음2" ]);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res([ undefined, "추천영상을 찾을수없음21" ]);
       }
     }).catch((err) => {

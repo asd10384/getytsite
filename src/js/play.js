@@ -50,7 +50,7 @@ function loadVideo() {
       console.log(`${vid} {\n  id: ${vid}\n  name: ${title}\n  link: https://youtu.be/${vid}\n}`);
     }
     if (event.data == 0) {
-      $.get(`/recommand?list=${list.join(",")}&vid=${vid}${getmax ? `&max=${getmax}` : ""}`, (data) => {
+      $.get(`/recommand?list=[${list.join(",")}]&vid=${vid}${getmax ? `&max=${getmax}` : ""}`, (data) => {
         if (data?.vid) {
           vid = data.vid;
           list.push(vid);
