@@ -11,5 +11,10 @@
     "alwaysStrict": true,
     "skipLibCheck": true
   },
-  "include": ["./src/"]
+  "include": ["./src/"],
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "experimentalResolver": true
+  }
 }
