@@ -12,13 +12,13 @@ const min = 1;
 export const recommand = async (recomlist: string[], vid: string, getmax: number | undefined): Promise<[ string, undefined ] | [ undefined, string ]> => {
   if (!authorization) return [ undefined, "authorization을 찾을수 없음" ];
 
-  const getvid = await second(vid, recomlist, getmax);
+  const getvid = await getData(vid, recomlist, getmax);
   if (!getvid[0]) return [ undefined, getvid[1] ];
   // console.log(getvid);
   return [ getvid[0], undefined ];
 }
 
-async function second(vid: string, recomlist: string[], getmax: number | undefined) {
+async function getData(vid: string, recomlist: string[], getmax: number | undefined) {
   return new Promise<[string | undefined, string]>((res, _rej) => {
     axios.post(`https://music.youtube.com/youtubei/v1/next?key=${key}&prettyPrint=false`, {
       "enablePersistentPlaylistPanel": true,
