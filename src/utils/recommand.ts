@@ -53,10 +53,9 @@ async function getData(vid: string, recomlist: string[], getmax: number | undefi
         let d1 = res2.data?.contents?.singleColumnMusicWatchNextResultsRenderer?.tabbedRenderer?.watchNextTabbedResultsRenderer?.tabs[0]?.tabRenderer?.content?.musicQueueRenderer?.content?.playlistPanelRenderer?.contents;
         let getvid: string | undefined = undefined;
         let alr: number[] = [];
-        const setmax = getmax ? getmax : max;
         for (let i=1; i<d1.length; i++) {
           let r = i;
-          if (r<=setmax) r = Math.floor((Math.random()*(setmax-min))+min);
+          if (r<=max) r = Math.floor((Math.random()*(max-min))+min);
           if (alr.includes(r)) {
             continue;
           } else {
@@ -76,7 +75,7 @@ async function getData(vid: string, recomlist: string[], getmax: number | undefi
         // console.log(err);
         return res([ undefined, "추천영상을 찾을수없음21" ]);
       }
-    }).catch((err) => {
+    }).catch(() => {
       // console.log(err);
       return res([ undefined, "키를 찾을수없음2" ]);
     })
