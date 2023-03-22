@@ -2,7 +2,7 @@ import "dotenv/config";
 import { Router } from "express";
 import { getPlayList } from "../utils/getytplaylist";
 
-const checklist = /^(?:https?:\/\/)?(?:m\.|www\.|music\.)?(?:youtu\.be\/|youtube\.com\/(?:playlist\?list=))((\w|-).+)(?:\S+)?$/;
+const checklist = /^(?:https?:\/?\/?)?(?:m\.|www\.|music\.)?(?:youtu\.be\/|youtube\.com\/(?:playlist\?list=))((\w|-).+)(?:\S+)?$/;
 const def = "https://music.youtube.com/playlist?list=";
 
 export default Router().get("/playlist", async (req, res) => {
@@ -12,7 +12,6 @@ export default Router().get("/playlist", async (req, res) => {
   let count: number | undefined = req.query.count ? Number((req.query.count as string).trim()) || 10 : 10;
   if (!url) return res.status(300).json({ err: "not found url" });
   var check = url.match(checklist);
-  if (!check || !check[1]) check = url.match(checklist);
   if (!check || !check[1]) check = `${def}${url}`.match(checklist);
   if (!check || !check[1]) return res.status(300).json({ err: "not the url of youtube playlist or youtube music playlist" });
   const { name, list, err } = await getPlayList(check[1]);
@@ -36,7 +35,7 @@ export default Router().get("/playlist", async (req, res) => {
     length: list.length,
     count: count,
     getorigin: domain,
-    url: url,
+    url: check[1],
     page: page,
     maxPage: maxPage,
     before: page-1 < 1 ? 1 : page-1,
