@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%- title %></title>
+  
+  <link rel="icon" href="/favicon.ico">
+  <%- include ("./header.ejs") %>
+
+  <link rel="stylesheet" href="file/css/playlist.css">
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>
+  <div class="back">
+    <a href="/">[ 메인으로 ]</a>
+  </div>
+  <div class="page">
+    <a href="?url=<%- url %>&page=<%- before %>&count=<%- count %>"<% if (cantBefore == true) { %> style="pointer-events: none; color: rgb(50, 50, 50);"<% } %>>[ 이전페이지 ]</a>
+    <a href="?url=<%- url %>&page=<%- next %>&count=<%- count %>"<% if (cantNext == true) { %> style="pointer-events: none; color: rgb(50, 50, 50);"<% } %>>[ 다음페이지 ]</a>
+  </div>
+  <div class="pageCount">
+    <input id="page" type="number" placeholder="페이지" value="<%- page %>"/> <button onclick="onClick('page');">적용</button>
+  </div>
+  <div class="count">
+    <input id="count" type="number" placeholder="개수" value="<%- count %>"/> <button onclick="onClick('count');">적용</button>
+  </div>
+  <h2><a href="<%- url.replace('music.', 'www.') %>"><%- name %></a> (총 : <%- length %>개)</h2>
+  <h2>페이지 : <%- page %>/<%- maxPage %></h2>
+  <div class="list">
+    <%- lists %>
+  </div>
+  <script>
+    const onClick = (id) => {
+      const value = document.querySelector(`input[id='${id}']`)?.value;
+      if (!value || value.length == 0) return alert("숫자를 입력한뒤\n적용버튼을 눌러주세요.");
+      if (Number(value) < 1) return alert("숫자는 1이상만 입력할수 있습니다.");
+      location.href = `?url=<%- url %>&page=${id == "page" ? value : 1}&count=${id == "count" ? value : "<%- count %>"}`;
+    }
+  </script>
+</body>
+</html>

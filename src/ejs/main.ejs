@@ -31,11 +31,19 @@
   </div>
   <div class="play">
     <h2>play</h2>
-    <h3>받은 노래주소(유튜브영상,유튜브뮤직)로 자동재생</h3>
-    <h4>사용법: 노래주소(유튜브영상,유튜브뮤직) 입력</h4>
+    <h3>받은 노래주소(유튜브,유튜브뮤직)로 자동재생</h3>
+    <h4>사용법: 노래주소(유튜브,유튜브뮤직) 입력</h4>
     <h5>예시: ['https://music.youtube.com/watch?v=ShP6KqZVQtM']</h5>
     <input id="text3" type="text" placeholder="예시: ['ShP6KqZVQtM']" />
     <button type="button" onclick="onClick('play')">재생</button>
+  </div>
+  <div class="playlist">
+    <h2>playlist</h2>
+    <h3>플레이리스트 주소(유튜브,유튜브뮤직)로 불러오기</h3>
+    <h4>사용법: 플레이리스트 주소(유튜브,유튜브뮤직) 입력</h4>
+    <h5>예시: ['https://music.youtube.com/playlist?list=RDCLAK5uy_kFoxHZo_PEVrqVnwKkeucGn4ldSyKHD8A']</h5>
+    <input id="text4" type="text" placeholder="예시: ['RDCLAK5uy_kFoxHZo_PEVrqVnwKkeucGn4ldSyKHD8A']" />
+    <button type="button" onclick="onClick('playlist')">불러오기</button>
   </div>
   <script>
     const onClick = (data) => {
@@ -43,10 +51,12 @@
       let text = document.getElementById("text").value;
       let text2 = document.getElementById("text2").value;
       let text3 = document.getElementById("text3").value;
+      let text4 = document.getElementById("text4").value;
       let list = document.getElementById("list").value;
       if (data == "ytsr") url += `ytsr?text=${text}&html=true`;
       if (data == "recommand") url += `recommand?list=${list ? list : "[]"}&vid=${text2}&html=true`;
       if (data == "play") url += `play?url=${text3}`;
+      if (data == "playlist") url += `playlist?url=${text4}&count=10&page=1`;
       window.location.href = url;
     }
   </script>
